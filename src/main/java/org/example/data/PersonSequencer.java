@@ -11,7 +11,7 @@ public class PersonSequencer{
         return personId + 1;
     }
 
-    public static int reset(int personId){
-        return 0;
+    public static void reset(int personId){
+        personId =  0;
     }
 }

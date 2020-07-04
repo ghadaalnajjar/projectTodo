@@ -29,19 +29,36 @@ public class TodoItems {
         }
         return null;
     }
+
     public static Todo newTodo (String des){
-        Todo todo= new Todo(TodoSequencer.nextTodoId(todos[size()-1].getTodoId()), des);
-        incressTodoSize();
+        Todo todo= new Todo(TodoSequencer.nextTodoId(getMaxTodoId(todos)), des);
+        todos = incressTodoSize(todos);
         todos[size()-1] = todo;
         return todos[size()-1];
     }
-    public static Todo[] incressTodoSize() {
-        return Arrays.copyOf(todos, size() + 1);
+
+    public static int getMaxTodoId(Todo[] todo){
+        if(todo.length == 0)
+            return 1;
+        else{
+            int max = 0;
+            for (int i = 0; i < todo.length; i++){
+                if(max < todos[i].getTodoId())
+                    max = todos[i].getTodoId();
+            }
+            return max;
+        }
     }
+
+    public static Todo[] incressTodoSize(Todo[] todo) {
+        return Arrays.copyOf(todo, size() + 1);
+    }
+
     public static void clear(){
         todos = new Todo[0];
     }
-    public Todo[] findByDoneStatus(boolean doneStatus){
+
+    public static Todo[] findByDoneStatus(boolean doneStatus){
         Todo[] t = new Todo[0];
         for (int i = 0; i < size(); i++){
             if (todos[i].getDone() == doneStatus) {
@@ -51,45 +68,52 @@ public class TodoItems {
         }
         return t;
     }
-    public Todo[] findByAssignee(int personId){
+
+    public static Todo[] findByAssignee(int personId){
         Todo[] t = new Todo[0];
         Person[] p = new Person[0];
         for (int i = 0; i < size(); i++){
-            Arrays.copyOf(p, p.length + 1);
+            p = Arrays.copyOf(p, p.length + 1);
             p[p.length-1] = todos[i].getAssignee();
             if(p[p.length-1].getPersonId() == personId){
-                Arrays.copyOf(t, t.length + 1);
+                t = Arrays.copyOf(t, t.length + 1);
                 t[t.length-1] = todos[i];
             }
         }
         return t;
     }
-    public Todo[] findByAssignee(Person assignee){
+
+    public static Todo[] findByAssignee(Person assignee){
         Todo[] t = new Todo[0];
         for (int i = 0; i < size(); i++){
             if(todos[i].getAssignee().equals(assignee)){
-                Arrays.copyOf(t, t.length + 1);
+                t = Arrays.copyOf(t, t.length + 1);
                 t[t.length-1] = todos[i];
             }
         }
         return t;
     }
-    public Todo[] findUnassignedTodoItems(){
+
+    public static Todo[] findUnassignedTodoItems(){
         Todo[] t = new Todo[0];
         for (int i = 0; i < size(); i++){
             if(todos[i].getAssignee().equals(null)){
-                Arrays.copyOf(t, t.length + 1);
+                t = Arrays.copyOf(t, t.length + 1);
                 t[t.length-1] = todos[i];
             }
         }
         return t;
     }
-    public void removeObject(Todo todo){
+
+    public static void removeObject(int todoId){
+        Todo[] t = new Todo[0];
         for (int i = 0; i < size(); i++){
-            if (todo.getTodoId() == todos[i].getTodoId()){
-                todos[i] = null;
+            if (todoId != todos[i].getTodoId()){
+                t = Arrays.copyOf(t, t.length+1);
+                t[t.length-1] = todos[i];
             }
         }
+        todos = t;
     }
 
 }

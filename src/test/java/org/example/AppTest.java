@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.example.data.People;
 import org.example.data.PersonSequencer;
+import org.example.data.TodoItems;
 import org.example.data.TodoSequencer;
 import org.example.model.Person;
 import org.example.model.Todo;
@@ -45,14 +46,13 @@ public class AppTest {
         Person person = new Person(11, "ana", "all");
 
         assertEquals(12, PersonSequencer.nextPersonId(person.getPersonId()));
-        assertEquals(0, PersonSequencer.reset(person.getPersonId()));
+        //assertEquals(0, PersonSequencer.reset(person.getPersonId()));
 
     }
 
     @Test
     public void todoSequencerTest(){
         Todo todo = new Todo(11, "ana");
-
         assertEquals(12, TodoSequencer.nextTodoId(todo.getTodoId()));
         assertEquals(0, TodoSequencer.reset(todo.getTodoId()));
 
@@ -62,10 +62,18 @@ public class AppTest {
     public void peopleTest(){
         People.newPerson("ana", "ali");
         assertEquals(1, People.size());
+        People.clear();
+        assertEquals(0, People.size());
     }
 
     @Test
     public void todoItemsTest(){
-
+        TodoItems.newTodo("ana");
+        TodoItems.newTodo("alnajjar");
+        assertEquals(2, TodoItems.size());
+        TodoItems.removeObject(2);
+        assertEquals(1, TodoItems.size());
+        TodoItems.clear();
+        assertEquals(0, TodoItems.size());
     }
 }

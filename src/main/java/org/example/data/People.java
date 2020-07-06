@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 
 public class People {
+
     private static Person[] persons = new Person[0];
 
     public static void main(String[] args) {
@@ -15,12 +16,8 @@ public class People {
         return persons.length;
     }
 
-    public static Person[] findAll(Person[] person) {
-        for (int i = 0; i < size(); i++) {
-            if (persons[i].equals(person))
-                return person;
-        }
-        return null;
+    public static Person[] findAll() {
+        return persons;
     }
 
     public static Person findById(int personId){
@@ -38,14 +35,15 @@ public class People {
             int max = 0;
             for (int i = 0; i < person.length; i++){
                 if(max < person[i].getPersonId())
-                    max = person[i].getPersonId();
+                    max = person[i].getPersonId()+1;
             }
             return max;
         }
     }
 
     public static Person newPerson (String fname, String lname){
-        Person person = new Person(PersonSequencer.nextPersonId(getMaxPersonId(persons)) , fname, lname);
+        PersonSequencer p = new PersonSequencer(getMaxPersonId(persons));
+        Person person = new Person(p.getNextPersonId(), fname, lname);
         persons = incressPersonSize(persons);
         persons[size()-1] = person;
         return persons[size()-1];

@@ -5,7 +5,7 @@ public class Todo {
     private final int todoId;
     private String description;
     private Boolean done;
-    Person assignee = new Person(123,"ana", "all");
+    Person assignee;
 
     // The constructor method
     public Todo (int todoId, String description) {

@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.data.People;
 import org.example.model.Person;
 
 import java.util.Scanner;

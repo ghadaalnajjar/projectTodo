@@ -1,17 +1,20 @@
 package org.example.data;
 
-import org.example.model.Person;
 
-public class PersonSequencer{
-    private static int personId(Person person){
-        return person.getPersonId();
+public class PersonSequencer {
+
+    private static int personId;
+
+    public PersonSequencer(int personId) {
+        this.personId = personId;
     }
-
-    public static int nextPersonId(int personId){
-        return personId + 1;
+    public static int getPersonId() {
+        return personId;
     }
-
-    public static void reset(int personId){
+    public static int getNextPersonId(){
+        return personId = personId + 1;
+    }
+    public static void reset(){
         personId =  0;
     }
 }

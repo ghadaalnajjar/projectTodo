@@ -1,8 +1,5 @@
 package org.example;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.example.data.People;
 import org.example.data.PersonSequencer;
 import org.example.data.TodoItems;
@@ -10,6 +7,8 @@ import org.example.data.TodoSequencer;
 import org.example.model.Person;
 import org.example.model.Todo;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class AppTest {
 
@@ -44,35 +43,62 @@ public class AppTest {
     @Test
     public void personSequencerTest(){
         Person person = new Person(11, "ana", "all");
-
-        assertEquals(12, PersonSequencer.nextPersonId(person.getPersonId()));
-        //assertEquals(0, PersonSequencer.reset(person.getPersonId()));
+        PersonSequencer p = new PersonSequencer(person.getPersonId());
+        assertEquals(11, PersonSequencer.getPersonId());
+        assertEquals(12, PersonSequencer.getNextPersonId());
+        PersonSequencer.reset();
+        assertEquals(0, PersonSequencer.getPersonId());
 
     }
 
     @Test
     public void todoSequencerTest(){
         Todo todo = new Todo(11, "ana");
-        assertEquals(12, TodoSequencer.nextTodoId(todo.getTodoId()));
-        assertEquals(0, TodoSequencer.reset(todo.getTodoId()));
-
+        TodoSequencer t = new TodoSequencer(todo.getTodoId());
+        assertEquals(11, TodoSequencer.getTodoId());
+        assertEquals(12, TodoSequencer.getNextTodoId());
+        TodoSequencer.reset();
+        assertEquals(0, TodoSequencer.getTodoId());
     }
 
     @Test
     public void peopleTest(){
-        People.newPerson("ana", "ali");
-        assertEquals(1, People.size());
+        People.newPerson("hala", "ali");
+        People.newPerson("ana", "ana");
+        assertEquals(2, People.size());
+        Person p1 = People.findById(2);
+        Person p2 = People.findById(1);
+        assertNotEquals(p1, p2);
+        Person[] persons = People.findAll();
+        assertEquals(persons.length, People.size());
+        persons = People.incressPersonSize(persons);
+        assertEquals(3, persons.length);
+        assertEquals(null, People.findById(50));
         People.clear();
         assertEquals(0, People.size());
     }
 
     @Test
     public void todoItemsTest(){
+        TodoItems.newTodo("hala");
         TodoItems.newTodo("ana");
-        TodoItems.newTodo("alnajjar");
         assertEquals(2, TodoItems.size());
+        Todo t1 = TodoItems.findById(2);
+        Todo t2 = TodoItems.findById(1);
+        assertNotEquals(t1, t2);
+        Todo[] todos = TodoItems.findAll();
+        assertEquals(todos.length, TodoItems.size());
+        todos = TodoItems.incressTodoSize(todos);
+        assertEquals(3, todos.length);
+        assertEquals(null, TodoItems.findById(50));
         TodoItems.removeObject(2);
         assertEquals(1, TodoItems.size());
+        todos = TodoItems.findUnassignedTodoItems();
+        assertEquals(1, todos.length);
+        todos = TodoItems.findByAssignee(null);
+        assertEquals(1, todos.length);
+        //todos = TodoItems.findByDoneStatus(true);
+        //assertEquals(0, todos.length);
         TodoItems.clear();
         assertEquals(0, TodoItems.size());
     }

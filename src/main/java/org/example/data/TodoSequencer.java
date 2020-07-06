@@ -1,15 +1,18 @@
 package org.example.data;
 
-import org.example.model.Todo;
-
 public class TodoSequencer {
-    private static int todoId(Todo todo){
-        return todo.getTodoId();
+    private static int todoId;
+
+    public TodoSequencer(int todoId) {
+        this.todoId = todoId;
     }
-    public static int nextTodoId(int todoId){
-        return todoId + 1;
+    public static int getTodoId() {
+        return todoId;
     }
-    public static int reset(int todoId){
-        return 0;
+    public static int getNextTodoId(){
+        return todoId = todoId + 1;
+    }
+    public static void reset(){
+        todoId =  0;
     }
 }

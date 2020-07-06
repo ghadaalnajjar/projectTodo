@@ -15,12 +15,8 @@ public class TodoItems {
         return todos.length;
     }
 
-    public static Todo[] findAll(Todo[] todo) {
-        for (int i = 0; i < size(); i++) {
-            if (todos[i].equals(todo))
-                return todo;
-        }
-        return null;
+    public static Todo[] findAll() {
+        return todos;
     }
     public static Todo findById(int todoId){
         for (int i = 0; i < size(); i++){
@@ -31,7 +27,8 @@ public class TodoItems {
     }
 
     public static Todo newTodo (String des){
-        Todo todo= new Todo(TodoSequencer.nextTodoId(getMaxTodoId(todos)), des);
+        TodoSequencer t = new TodoSequencer(getMaxTodoId(todos));
+        Todo todo= new Todo(t.getNextTodoId(), des);
         todos = incressTodoSize(todos);
         todos[size()-1] = todo;
         return todos[size()-1];
@@ -44,7 +41,7 @@ public class TodoItems {
             int max = 0;
             for (int i = 0; i < todo.length; i++){
                 if(max < todos[i].getTodoId())
-                    max = todos[i].getTodoId();
+                    max = todos[i].getTodoId()+1;
             }
             return max;
         }
@@ -86,7 +83,7 @@ public class TodoItems {
     public static Todo[] findByAssignee(Person assignee){
         Todo[] t = new Todo[0];
         for (int i = 0; i < size(); i++){
-            if(todos[i].getAssignee().equals(assignee)){
+            if(todos[i].getAssignee() == assignee){
                 t = Arrays.copyOf(t, t.length + 1);
                 t[t.length-1] = todos[i];
             }
@@ -97,7 +94,7 @@ public class TodoItems {
     public static Todo[] findUnassignedTodoItems(){
         Todo[] t = new Todo[0];
         for (int i = 0; i < size(); i++){
-            if(todos[i].getAssignee().equals(null)){
+            if(todos[i].getAssignee() == null){
                 t = Arrays.copyOf(t, t.length + 1);
                 t[t.length-1] = todos[i];
             }

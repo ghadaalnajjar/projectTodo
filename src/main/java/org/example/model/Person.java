@@ -17,18 +17,21 @@ public class Person {
     public int getPersonId() {
         return personId;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    public String getFirstName() {
-         return this.firstName;
-    }
-    public void setLastName (String lastName){
-         this.lastName = lastName;
-    }
-    public String getLastName() {
-          return this.lastName;
-     }
 
+    public String getFirstName() {
+        return this.firstName;
     }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+}
 

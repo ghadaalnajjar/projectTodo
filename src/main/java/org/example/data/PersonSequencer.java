@@ -4,14 +4,9 @@ public class PersonSequencer {
 
     private static int personId;
 
-    public PersonSequencer(int personId) {
-        this.personId = personId;
-    }
-    public static int getPersonId() {
-        return personId;
-    }
     public static int getNextPersonId(){
-        return personId += 1;
+       personId ++;
+       return personId;
     }
     public static void reset(){
         personId =  0;

@@ -6,6 +6,7 @@ import org.example.data.TodoItems;
 import org.example.data.TodoSequencer;
 import org.example.model.Person;
 import org.example.model.Todo;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -41,93 +42,116 @@ public class AppTest {
     }
 
     @Test
-    public void personSequencerTest(){
-        Person person = new Person(11, "ana", "all");
-        PersonSequencer p = new PersonSequencer(person.getPersonId());
-        assertEquals(11, PersonSequencer.getPersonId());
-        assertEquals(12, PersonSequencer.getNextPersonId());
+    public void testPersonNextId(){
+        int oldid = PersonSequencer.getNextPersonId();
+
+        int newid = PersonSequencer.getNextPersonId();
+
+        assertEquals(oldid + 1, newid);
+    }
+
+    @Test
+    public void testPersonRest(){
+        int oldid = PersonSequencer.getNextPersonId();
+
         PersonSequencer.reset();
-        assertEquals(0, PersonSequencer.getPersonId());
 
+        int newid = PersonSequencer.getNextPersonId();
+
+        assertNotEquals(oldid + 1 , newid);
+    }
+
+
+    @Test
+    public void testTodoNextId() {
+        int oldId = TodoSequencer.getNextTodoId();
+
+        int newId = TodoSequencer.getNextTodoId();
+
+        assertEquals(oldId + 1, newId);
     }
 
     @Test
-    public void todoSequencerTest(){
-        Todo todo = new Todo(11, "ana");
-        TodoSequencer t = new TodoSequencer(todo.getTodoId());
-        assertEquals(11, TodoSequencer.getTodoId());
-        assertEquals(12, TodoSequencer.getNextTodoId());
+    public void testTodoRest(){
+        int oldid = TodoSequencer.getNextTodoId();
+
         TodoSequencer.reset();
-        assertEquals(0, TodoSequencer.getTodoId());
+
+        int newid = TodoSequencer.getNextTodoId();
+
+        assertNotEquals(oldid + 1 , newid);
     }
 
-    @Test
-    public void peopleTest(){
-        People.newPerson("hala", "ali");
-        People.newPerson("ana", "ana");
-        assertEquals(2, People.size());
-        Person p1 = People.findById(2);
-        Person p2 = People.findById(1);
-        assertNotEquals(p1, p2);
-        Person[] persons = People.findAll();
-        assertEquals(persons.length, People.size());
-        persons = People.incressPersonSize(persons);
-        assertEquals(3, persons.length);
-        assertEquals(null, People.findById(50));
+    People testPeople;
+    TodoItems testTodo;
+
+    @Before
+    public void doBefore() {
+        testPeople = new People();
         People.clear();
-        assertEquals(0, People.size());
+        testPeople.newPerson("ana1", "all1");
+        testPeople.newPerson("ana2", "all2");
+
+        testTodo = new TodoItems();
+        TodoItems.clear();
+        testTodo.newTodo("ana");
+        testTodo.newTodo("all");
+        testTodo.findAll()[0].setDone(true);
+        testTodo.findAll()[1].setDone(false);
+        testTodo.findAll()[0].setAssignee(testPeople.findById(1));
+        testTodo.findAll()[1].setAssignee(testPeople.findById(1));
     }
 
     @Test
-    public void todoItemsTest(){
-        TodoItems.newTodo("hala");
+    public void testPeople(){
+        People.newPerson("ana", "all");
+
+        assertEquals(1, testPeople.findAll()[0].getPersonId());
+        assertEquals("ana1", testPeople.findAll()[0].getFirstName());
+        assertEquals("all1", testPeople.findAll()[0].getLastName());
+
+        assertEquals(2, testPeople.findAll()[1].getPersonId());
+        assertEquals("ana2", testPeople.findAll()[1].getFirstName());
+        assertEquals("all2", testPeople.findAll()[1].getLastName());
+
+    }
+
+    @Test
+    public void findByPersonIdFalse() {
+        Person foundId = testPeople.findById(3);
+
+        assertNull(foundId);
+    }
+
+
+    @Test
+    public void testTodo(){
         TodoItems.newTodo("ana");
-        assertEquals(2, TodoItems.size());
 
-        //findById
-        Todo t1 = TodoItems.findById(2);
-        Todo t2 = TodoItems.findById(1);
-        assertNotEquals(t1, t2);
+        assertEquals("ana", testTodo.findAll()[0].getDescription());
+        assertEquals(1, testTodo.findAll()[0].getTodoId());
+        assertTrue(testTodo.findAll()[0].getDone());
+        assertNotNull(testTodo.findAll()[0].getAssignee());
 
-        //findAll
-        Todo[] todos = TodoItems.findAll();
-        assertEquals(todos.length, TodoItems.size());
+        assertEquals("all", testTodo.findAll()[1].getDescription());
+        assertEquals(2, testTodo.findAll()[1].getTodoId());
+        assertFalse(testTodo.findAll()[1].getDone());
+        assertNotNull(testTodo.findAll()[1].getAssignee());
+    }
 
-        //incressTodoSize
-        todos = TodoItems.incressTodoSize(todos);
-        assertEquals(3, todos.length);
-        assertEquals(null, TodoItems.findById(50));
+    @Test
+    public void findByTodoIdFalse() {
+        Person foundId = testPeople.findById(3);
 
-        //findByAssignee
-        todos = TodoItems.findByAssignee(null);
-        assertEquals(2, todos.length);
+        assertNull(foundId);
+    }
 
-        //findUnassignedTodoItems
-        todos = TodoItems.findUnassignedTodoItems();
-        assertEquals(2, todos.length);
+    @Test
+    public void testRemoveObject(){
+        assertEquals(2, testTodo.findAll().length);
 
-        //remove object
-        TodoItems.removeObject(2);
-        assertEquals(1, TodoItems.size());
+        TodoItems.removeObject(testTodo.findAll()[1].getTodoId());
 
-        //Clear
-        TodoItems.clear();
-        assertEquals(0, TodoItems.size());
-
-        //findByAssignee(int personId)
-        Person pp1 = People.newPerson("ghada", "alnajjar");
-        Todo tt1 = TodoItems.newTodo("ana");
-        Todo tt2 = TodoItems.newTodo("all");
-        tt1.setAssignee(pp1);
-        tt1.setDone(true);
-        tt2.setAssignee(pp1);
-        tt2.setDone(false);
-        Todo[] todos1 = TodoItems.findByAssignee(pp1.getPersonId());
-        Todo[] todos2 = {tt1, tt2};
-        assertArrayEquals(todos1, todos2);
-
-        //findByDoneStatus
-        todos = TodoItems.findByDoneStatus(true);
-        assertEquals(1, todos.length);
+        assertEquals(1, testTodo.findAll().length);
     }
 }

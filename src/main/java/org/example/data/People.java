@@ -25,22 +25,8 @@ public class People {
         return null;
     }
 
-    public static int getMaxPersonId(Person[] person){
-        if(person.length == 0)
-            return 1;
-        else{
-            int max = 0;
-            for (int i = 0; i < person.length; i++){
-                if(max < person[i].getPersonId())
-                    max = person[i].getPersonId()+1;
-            }
-            return max;
-        }
-    }
-
     public static Person newPerson (String fname, String lname){
-        PersonSequencer p = new PersonSequencer(getMaxPersonId(persons));
-        Person person = new Person(p.getNextPersonId(), fname, lname);
+        Person person = new Person(PersonSequencer.getNextPersonId(), fname, lname);
         persons = incressPersonSize(persons);
         persons[size()-1] = person;
         return persons[size()-1];

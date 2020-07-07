@@ -24,24 +24,10 @@ public class TodoItems {
     }
 
     public static Todo newTodo (String des){
-        TodoSequencer t = new TodoSequencer(getMaxTodoId(todos));
-        Todo todo= new Todo(t.getNextTodoId(), des);
+        Todo todo= new Todo(TodoSequencer.getNextTodoId(), des);
         todos = incressTodoSize(todos);
         todos[size()-1] = todo;
         return todos[size()-1];
-    }
-
-    public static int getMaxTodoId(Todo[] todo){
-        if(todo.length == 0)
-            return 1;
-        else{
-            int max = 0;
-            for (int i = 0; i < todo.length; i++){
-                if(max < todos[i].getTodoId())
-                    max = todos[i].getTodoId()+1;
-            }
-            return max;
-        }
     }
 
     public static Todo[] incressTodoSize(Todo[] todo) {

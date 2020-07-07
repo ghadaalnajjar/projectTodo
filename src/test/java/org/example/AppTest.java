@@ -83,23 +83,51 @@ public class AppTest {
         TodoItems.newTodo("hala");
         TodoItems.newTodo("ana");
         assertEquals(2, TodoItems.size());
+
+        //findById
         Todo t1 = TodoItems.findById(2);
         Todo t2 = TodoItems.findById(1);
         assertNotEquals(t1, t2);
+
+        //findAll
         Todo[] todos = TodoItems.findAll();
         assertEquals(todos.length, TodoItems.size());
+
+        //incressTodoSize
         todos = TodoItems.incressTodoSize(todos);
         assertEquals(3, todos.length);
         assertEquals(null, TodoItems.findById(50));
+
+        //findByAssignee
+        todos = TodoItems.findByAssignee(null);
+        assertEquals(2, todos.length);
+
+        //findUnassignedTodoItems
+        todos = TodoItems.findUnassignedTodoItems();
+        assertEquals(2, todos.length);
+
+        //remove object
         TodoItems.removeObject(2);
         assertEquals(1, TodoItems.size());
-        todos = TodoItems.findUnassignedTodoItems();
-        assertEquals(1, todos.length);
-        todos = TodoItems.findByAssignee(null);
-        assertEquals(1, todos.length);
-        //todos = TodoItems.findByDoneStatus(true);
-        //assertEquals(0, todos.length);
+
+        //Clear
         TodoItems.clear();
         assertEquals(0, TodoItems.size());
+
+        //findByAssignee(int personId)
+        Person pp1 = People.newPerson("ghada", "alnajjar");
+        Todo tt1 = TodoItems.newTodo("ana");
+        Todo tt2 = TodoItems.newTodo("all");
+        tt1.setAssignee(pp1);
+        tt1.setDone(true);
+        tt2.setAssignee(pp1);
+        tt2.setDone(false);
+        Todo[] todos1 = TodoItems.findByAssignee(pp1.getPersonId());
+        Todo[] todos2 = {tt1, tt2};
+        assertArrayEquals(todos1, todos2);
+
+        //findByDoneStatus
+        todos = TodoItems.findByDoneStatus(true);
+        assertEquals(1, todos.length);
     }
 }

@@ -9,9 +9,6 @@ public class People {
 
     private static Person[] persons = new Person[0];
 
-    public static void main(String[] args) {
-    }
-
     public static int size() {
         return persons.length;
     }

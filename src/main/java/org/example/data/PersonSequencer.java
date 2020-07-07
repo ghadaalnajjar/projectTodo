@@ -1,6 +1,5 @@
 package org.example.data;
 
-
 public class PersonSequencer {
 
     private static int personId;
@@ -12,7 +11,7 @@ public class PersonSequencer {
         return personId;
     }
     public static int getNextPersonId(){
-        return personId = personId + 1;
+        return personId += 1;
     }
     public static void reset(){
         personId =  0;

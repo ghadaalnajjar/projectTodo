@@ -10,7 +10,7 @@ public class TodoSequencer {
         return todoId;
     }
     public static int getNextTodoId(){
-        return todoId = todoId + 1;
+        return todoId += 1;
     }
     public static void reset(){
         todoId =  0;

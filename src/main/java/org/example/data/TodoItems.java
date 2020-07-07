@@ -8,9 +8,6 @@ import java.util.Arrays;
 public class TodoItems {
     private static Todo[] todos = new Todo[0];
 
-    public static void main(String[] args) {
-    }
-
     public static int size() {
         return todos.length;
     }
@@ -56,14 +53,14 @@ public class TodoItems {
     }
 
     public static Todo[] findByDoneStatus(boolean doneStatus){
-        Todo[] t = new Todo[0];
+        Todo[] statusArray = new Todo[0];
         for (int i = 0; i < size(); i++){
-            if (todos[i].getDone() == doneStatus) {
-                Arrays.copyOf(t, t.length + 1);
-                t[t.length-1] = todos[i];
+            if (Boolean.TRUE.equals(todos[i].getDone())) {
+                statusArray = Arrays.copyOf(statusArray, statusArray.length +1 );
+                statusArray[statusArray.length-1] = todos[i];
             }
         }
-        return t;
+        return statusArray;
     }
 
     public static Todo[] findByAssignee(int personId){
